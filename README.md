@@ -53,3 +53,23 @@ Build an autonomous driving system that can perceive the environment, make decis
 ├── notebooks/
 ├── src/
 └── README.md
+
+## Data Preparation
+
+The data preparation pipeline includes the following steps:
+
+1. Load image data and labels.
+2. Clean and validate images.
+3. Resize images to the required dimensions.
+4. Split the dataset into training, validation, and test sets.
+5. Apply preprocessing and normalization.
+6. Use data augmentation during training.
+7. Analyse the dataset using EDA.
+8. Calculate mean and standard deviation for normalization.
+
+The dataset is split into:
+- 70% training data
+- 15% validation data
+- 15% test data
+
+The calculated mean and standard deviation are stored in `data/mean_std.json`.

@@ -46,3 +46,6 @@ def clean_images(input_folder, output_folder):
 
     print("Processed:", processed)
     print("Removed:", removed)
+
+if __name__ == "__main__":
+    clean_images("data/raw", "data/cleaned")

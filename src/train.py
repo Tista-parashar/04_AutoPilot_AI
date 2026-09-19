@@ -2,12 +2,14 @@ import time
 from torch.utils.data import DataLoader
 from data_loader import DataLoader as ImageDataset
 
+import os
+
 image_paths = [
-    "data/cleaned/t2.png",
-    "data/cleaned/test.png"
+    os.path.join("data/cleaned", f)
+    for f in os.listdir("data/cleaned")
 ]
 
-labels = [0, 1]
+labels = [0] * len(image_paths)
 
 dataset = ImageDataset(image_paths, labels)
 
