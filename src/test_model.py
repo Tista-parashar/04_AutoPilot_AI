@@ -5,8 +5,12 @@ from model import AutoPilotModel
 
 model = AutoPilotModel()
 
-x = torch.randn(1, 3, 256, 256)
+dummy = torch.randn(8, 3, 256, 256)
 
-out = model(x)
+output = model(dummy)
 
-print(out.shape)
+assert output.shape == (8, 3)
+
+print("Output shape:", output.shape)
+print("Min value:", output.min().item())
+print("Max value:", output.max().item())
