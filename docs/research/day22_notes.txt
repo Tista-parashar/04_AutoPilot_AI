@@ -1,0 +1,67 @@
+Day 22 - Architecture Selection
+
+Option 1: CNN
+Example: ResNet50
+
+Pros:
+- Good for images
+- Fast
+- Easy to train
+
+Cons:
+- Less powerful than transformers
+
+Option 2: Transformer
+
+Pros:
+- State of the art
+- Learns long-range relationships
+
+Cons:
+- Needs lots of data
+- Slow
+
+Option 3: Hybrid (CNN + Transformer)
+
+Pros:
+- Best of both worlds
+
+Cons:
+- More complex
+
+Chosen Architecture: CNN
+
+Reason:
+- Works well with images
+- Suitable for small datasets
+- Faster than Transformers
+- Good for GTX 1650 GPU
+
+Backbone: ResNet-50
+
+Reason:
+- Popular computer vision model
+- Good feature extraction
+- Easy to use with PyTorch
+- Well documented
+
+Decision Head: MLP
+
+Outputs:
+1. Steering
+2. Throttle
+3. Brake
+
+Flow:
+
+Camera Image
+    ↓
+ResNet-50
+    ↓
+Feature Vector
+    ↓
+MLP
+    ↓
+Steering
+Throttle
+Brake
