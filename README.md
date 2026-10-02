@@ -73,3 +73,21 @@ The dataset is split into:
 - 15% test data
 
 The calculated mean and standard deviation are stored in `data/mean_std.json`.
+
+## Preprocessing Pipeline
+
+The preprocessing pipeline includes:
+
+- Image cleaning and validation
+- Image resizing to 256×256
+- Feature engineering
+- Feature normalization
+- Data versioning with DVC
+- Preprocessing pipeline using sklearn Pipeline
+- Integration with DataLoader
+
+Pipeline artifacts:
+
+- models/preprocessor.joblib
+- data/norm_params.json
+- data/feature_scaler.pkl
