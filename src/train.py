@@ -2,6 +2,7 @@ import torch
 import torch.nn as nn
 import torch.optim as optim
 from torch.utils.data import DataLoader
+from torch.utils.tensorboard import SummaryWriter
 
 from data_loader import DataLoader as ImageDataset
 from model import AutoPilotModel
@@ -9,7 +10,7 @@ from model import AutoPilotModel
 import os
 
 
-def train_epoch(model, dataloader, optimizer, criterion):
+def train_epoch(model, dataloader, optimizer, criterion, writer, epoch):
     model.train()
 
     for batch_idx, (images, labels) in enumerate(dataloader):
@@ -25,6 +26,12 @@ def train_epoch(model, dataloader, optimizer, criterion):
         loss.backward()
 
         optimizer.step()
+
+        writer.add_scalar(
+            "Loss/train",
+            loss.item(),
+            epoch * len(dataloader) + batch_idx
+        )
 
         if batch_idx % 10 == 0:
             print(f"Batch {batch_idx} | Loss: {loss.item():.6f}")
@@ -55,11 +62,33 @@ optimizer = optim.Adam(
     lr=0.001
 )
 
+writer = SummaryWriter("runs/day30")
+
 print("Starting training...")
+
 
 for epoch in range(1):
     print(f"Epoch {epoch + 1}")
-    train_epoch(model, loader, optimizer, criterion)
+
+    train_epoch(
+        model,
+        loader,
+        optimizer,
+        criterion,
+        writer,
+        epoch
+    )
+
+    torch.save(
+        {
+            "epoch": epoch,
+            "model": model.state_dict(),
+            "optimizer": optimizer.state_dict(),
+        },
+        f"checkpoints/epoch_{epoch}.pth"
+    )
+
+    print(f"Checkpoint saved: checkpoints/epoch_{epoch}.pth")
 
 print("Training completed!")
-
+writer.close()
