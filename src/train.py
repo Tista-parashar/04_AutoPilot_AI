@@ -78,14 +78,14 @@ train_dataset, val_dataset = random_split(
 
 train_loader = DataLoader(
     train_dataset,
-    batch_size=2,
+    batch_size=32,
     shuffle=True,
     num_workers=0
 )
 
 val_loader = DataLoader(
     val_dataset,
-    batch_size=2,
+    batch_size=32,
     shuffle=False,
     num_workers=0
 )
@@ -111,7 +111,7 @@ best_loss = float("inf")
 
 print("Starting training...")
 
-for epoch in range(2):
+for epoch in range(10):
 
     print(f"Epoch {epoch + 1}")
 
