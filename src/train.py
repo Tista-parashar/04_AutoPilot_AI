@@ -1,7 +1,8 @@
-import time
+import torch
+import torch.nn as nn
 from torch.utils.data import DataLoader
 from data_loader import DataLoader as ImageDataset
-
+from model import AutoPilotModel
 import os
 
 image_paths = [
@@ -17,16 +18,26 @@ loader = DataLoader(
     dataset,
     batch_size=2,
     shuffle=True,
-    num_workers=0,
-    pin_memory=True
+    num_workers=0
 )
 
-start = time.time()
+model = AutoPilotModel()
+
+criterion = nn.MSELoss()
 
 for images, labels in loader:
-    pass
 
-end = time.time()
+    targets = torch.zeros(images.size(0), 3)
 
-print("Time taken:", end - start, "seconds")
-print("Dataset size:", len(dataset))
+    outputs = model(images)
+
+    loss = criterion(outputs, targets)
+
+    loss.backward()
+
+    print("Output shape:", outputs.shape)
+    print("Loss:", loss.item())
+
+    break
+
+print("Backward pass successful!")
