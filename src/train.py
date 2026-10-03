@@ -1,6 +1,7 @@
 import torch
 import torch.nn as nn
 import torch.optim as optim
+from torch.optim.lr_scheduler import StepLR
 from torch.utils.data import DataLoader
 from torch.utils.tensorboard import SummaryWriter
 
@@ -61,13 +62,18 @@ optimizer = optim.Adam(
     model.parameters(),
     lr=0.001
 )
+scheduler = StepLR(
+    optimizer,
+    step_size=1,
+    gamma=0.5
+)
 
 writer = SummaryWriter("runs/day30")
 
 print("Starting training...")
 
 
-for epoch in range(1):
+for epoch in range(2):
     print(f"Epoch {epoch + 1}")
 
     train_epoch(
@@ -89,6 +95,15 @@ for epoch in range(1):
     )
 
     print(f"Checkpoint saved: checkpoints/epoch_{epoch}.pth")
+    scheduler.step()
+
+writer.add_scalar(
+    "LR",
+    optimizer.param_groups[0]["lr"],
+    epoch
+)
+
+print("Current LR:", optimizer.param_groups[0]["lr"])
 
 print("Training completed!")
 writer.close()
