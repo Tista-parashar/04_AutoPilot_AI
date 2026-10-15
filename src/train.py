@@ -4,7 +4,7 @@ import torch
 import torch.nn as nn
 import torch.optim as optim
 
-from torch.optim.lr_scheduler import StepLR
+from torch.optim.lr_scheduler import ReduceLROnPlateau
 from torch.utils.data import DataLoader, random_split
 from torch.utils.tensorboard import SummaryWriter
 
@@ -99,10 +99,11 @@ optimizer = optim.Adam(
     lr=0.001
 )
 
-scheduler = StepLR(
+scheduler = ReduceLROnPlateau(
     optimizer,
-    step_size=1,
-    gamma=0.5
+    mode="min",
+    patience=3,
+    factor=0.5
 )
 
 writer = SummaryWriter("runs/day32")
@@ -160,7 +161,7 @@ for epoch in range(10):
 
     print(f"Checkpoint saved: checkpoints/epoch_{epoch}.pth")
 
-    scheduler.step()
+    scheduler.step(val_loss)
 
     writer.add_scalar(
         "LR",
