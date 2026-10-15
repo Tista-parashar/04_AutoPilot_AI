@@ -14,27 +14,25 @@ AutoPilot\_AI
 
 \### Training Configuration
 
-
-
 \- Model: AutoPilotModel (ResNet50 backbone)
 
 \- Optimizer: Adam
 
-\- Learning Rate: 0.001
+\- Initial Learning Rate: 0.001
 
-\- Scheduler: StepLR
+\- Scheduler: ReduceLROnPlateau
 
-\- Scheduler Gamma: 0.5
+\- Scheduler Mode: min
+
+\- Scheduler Patience: 3 epochs
+
+\- Scheduler Factor: 0.5
 
 \- Batch Size: 2
 
 \- Epochs: 10
 
 \- Loss Function: MSELoss
-
-
-
-\---
 
 
 
@@ -48,7 +46,7 @@ AutoPilot\_AI
 
 | Epoch | Validation Loss |
 
-|---------|---------|
+|---|---:|
 
 | 1 | 0.100554 |
 
@@ -72,121 +70,81 @@ AutoPilot\_AI
 
 
 
-\---
+\*Note: These results are from the previously recorded run. They have not been verified as results from the updated ReduceLROnPlateau scheduler.\*
 
 
 
 \## Saved Models
 
+\- `checkpoints/best\_model.pth`
 
-
-\- checkpoints/best\_model.pth
-
-\- models/final\_model.pth
-
-
-
-\---
+\- `models/final\_model.pth`
 
 
 
 \## Checkpoints
 
+\- `epoch\_0.pth`
 
+\- `epoch\_1.pth`
 
-\- epoch\_0.pth
+\- `epoch\_2.pth`
 
-\- epoch\_1.pth
+\- `epoch\_3.pth`
 
-\- epoch\_2.pth
+\- `epoch\_4.pth`
 
-\- epoch\_3.pth
+\- `epoch\_5.pth`
 
-\- epoch\_4.pth
+\- `epoch\_6.pth`
 
-\- epoch\_5.pth
+\- `epoch\_7.pth`
 
-\- epoch\_6.pth
+\- `epoch\_8.pth`
 
-\- epoch\_7.pth
-
-\- epoch\_8.pth
-
-\- epoch\_9.pth
-
-
-
-\---
+\- `epoch\_9.pth`
 
 
 
 \## Observations
 
+\- A training run and checkpoint saving were recorded.
 
+\- Validation loss increased sharply in early epochs and decreased afterward.
 
-\- Training completed successfully.
+\- The lowest value in the listed validation results was 0.100554 at Epoch 1.
 
-\- Validation loss increased sharply during early epochs.
+\- TensorBoard logging was previously observed working.
 
-\- Validation loss gradually decreased afterwards.
-
-\- Best validation loss achieved: 0.100554.
-
-\- Learning rate scheduler reduced learning rate each epoch.
-
-\- TensorBoard logging worked successfully.
-
-\- Checkpoint saving worked successfully.
-
-
-
-\---
+\- The current training script uses ReduceLROnPlateau, which adjusts the learning rate based on validation loss.
 
 
 
 \## Loss Analysis
 
-
-
-Loss curve saved in:
-
-
-
-reports/loss\_curve.png
+Loss curve: `reports/loss\_curve.png`
 
 
 
-No severe overfitting observed.
-
-
-
-\---
+The difference between training and validation loss warrants further investigation. Overfitting cannot be conclusively assessed from these results alone because the current pipeline uses zero-valued targets rather than real driving labels.
 
 
 
 \## Conclusion
 
-
-
-Week 5 training pipeline is complete.
-
-
-
-The model can be further improved by:
+The training pipeline has been implemented, but the model's driving performance has not been established. Meaningful evaluation requires real driving targets, a suitable validation strategy, and a fresh evaluation run.
 
 
 
-\- Increasing dataset size
+Potential next improvements:
 
-\- Using real driving data
+\- Use real driving data and labels.
 
-\- Data augmentation
+\- Increase the dataset size where appropriate.
 
-\- Hyperparameter tuning
+\- Explore data augmentation.
 
-\- Better validation strategy
+\- Tune hyperparameters.
 
-
-
-Current model is ready for future optimisation experiments.
+\- Evaluate on a separate validation dataset.
 
