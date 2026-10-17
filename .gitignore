@@ -5,3 +5,7 @@ __pycache__/
 /data
 *.pth
 runs/
+# Python package build artifacts
+build/
+dist/
+*.egg-info/
