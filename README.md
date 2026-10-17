@@ -91,3 +91,14 @@ Pipeline artifacts:
 - models/preprocessor.joblib
 - data/norm_params.json
 - data/feature_scaler.pkl
+## Model Deployment
+
+- Selected model: ONNX
+- Latency: 80.85 ms
+- Speed: 12.37 FPS
+- Model size: 89.62 MB
+- Accuracy: Not measured because labelled evaluation data is unavailable.
+
+See `reports/optimization_report.md` for the full optimisation report.
+
+ONNX is selected for further integration testing. The model has not been validated for real-world autonomous driving.
