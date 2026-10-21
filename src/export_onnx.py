@@ -21,8 +21,20 @@ def main():
     MODEL_DIR.mkdir(parents=True, exist_ok=True)
     torch.manual_seed(42)
 
-    model = AutoPilotModel().cpu().eval()
+    
+    checkpoint_path = PROJECT_ROOT / "checkpoints" / "best_model.pth"
+
+    model = AutoPilotModel().cpu()
+    state_dict = torch.load(
+        checkpoint_path,
+        map_location="cpu",
+        weights_only=True,
+    )
+    model.load_state_dict(state_dict)
+    model.eval()
+
     dummy = torch.randn(1, 3, 224, 224)
+ 
 
     # Export with names expected by ONNX Runtime.
     with torch.inference_mode():
