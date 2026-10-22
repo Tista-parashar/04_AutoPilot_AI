@@ -1,0 +1,4 @@
+timestamp,map,episode,status,collision,completion_time_seconds,average_speed_kmh,details
+2026-10-22T21:21:06,Town01,1,BLOCKED_NO_CONNECTION,,,,"time-out of 10000ms while waiting for the simulator, make sure the simulator is ready and connected to localhost:2000"
+2026-10-22T21:21:06,Town02,1,BLOCKED_NO_CONNECTION,,,,"time-out of 10000ms while waiting for the simulator, make sure the simulator is ready and connected to localhost:2000"
+2026-10-22T21:21:06,Town03,1,BLOCKED_NO_CONNECTION,,,,"time-out of 10000ms while waiting for the simulator, make sure the simulator is ready and connected to localhost:2000"
