@@ -56,7 +56,7 @@ def create_control_controllers():
     steering_pid = PIDController(
         kp=0.5,
         ki=0.01,
-        kd=0.05,
+        kd=0.1,
         output_limits=(-1.0, 1.0),
     )
 
