@@ -8,7 +8,9 @@ class AutoPilotModel(nn.Module):
     def __init__(self):
         super().__init__()
 
-        self.backbone = models.resnet50(pretrained=True)
+        self.backbone = models.resnet50(
+            weights=models.ResNet50_Weights.IMAGENET1K_V1
+        )
         self.backbone.fc = nn.Linear(2048, 3)
 
     def forward(self, x):
