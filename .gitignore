@@ -10,3 +10,4 @@ build/
 dist/
 *.egg-info/
 reports/sim_test_status.png
+wheelhouse/

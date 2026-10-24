@@ -2,55 +2,58 @@
 """Bridge utilities for connecting AutoPilot AI to CARLA."""
 
 import numpy as np
-import torch
-from torchvision import transforms
+import onnxruntime as ort
+from PIL import Image
+
 from src.controller import PIDController
 
 
 def preprocess_camera_image(image):
-    """Convert a CARLA RGB image into a ResNet-compatible tensor."""
+    """Convert a CARLA BGRA image into a normalized NumPy batch."""
     image_array = np.frombuffer(image.raw_data, dtype=np.uint8)
     image_array = image_array.reshape(
         (image.height, image.width, 4)
     )
 
-    # CARLA camera data uses BGRA channel order.
+    # Convert BGRA to RGB.
     rgb_image = image_array[:, :, :3][:, :, ::-1].copy()
 
-    image_tensor = transforms.Compose([
-        transforms.ToPILImage(),
-        transforms.Resize((224, 224)),
-        transforms.ToTensor(),
-        transforms.Normalize([0.5, 0.5, 0.5],
-                             [0.5, 0.5, 0.5]),
-    ])(rgb_image)
+    # Resize using bilinear interpolation, matching the previous pipeline.
+    resized_image = Image.fromarray(rgb_image).resize(
+        (224, 224),
+        resample=Image.Resampling.BILINEAR,
+    )
 
-    return image_tensor.unsqueeze(0)
+    # Convert to float32, scale to [0, 1], then normalize to [-1, 1].
+    image_array = np.asarray(resized_image, dtype=np.float32) / 255.0
+    image_array = (image_array - 0.5) / 0.5
 
-import onnxruntime as ort
+    # Convert HWC to NCHW: (1, 3, 224, 224).
+    image_array = np.transpose(image_array, (2, 0, 1))
+    return np.expand_dims(image_array, axis=0).astype(np.float32)
 
 
 def load_onnx_model(model_path="models/model.onnx"):
     """Load the ONNX model for CPU inference."""
-    session = ort.InferenceSession(
+    return ort.InferenceSession(
         model_path,
         providers=["CPUExecutionProvider"],
     )
-    return session
 
-def run_inference(session, image_tensor):
-    """Run ONNX inference on a preprocessed camera image."""
+
+def run_inference(session, image_batch):
+    """Run ONNX inference using a NumPy image batch."""
     input_name = session.get_inputs()[0].name
     output_name = session.get_outputs()[0].name
 
-    image_array = image_tensor.detach().cpu().numpy()
-
     outputs = session.run(
         [output_name],
-        {input_name: image_array},
+        {input_name: np.asarray(image_batch, dtype=np.float32)},
     )
 
     return outputs[0][0]
+
+
 def create_control_controllers():
     """Create separate PID controllers for steering and speed."""
     steering_pid = PIDController(
