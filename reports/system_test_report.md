@@ -42,3 +42,13 @@ real-world driving accuracy or successful end-to-end vehicle control.
 - Restore CARLA connectivity on compatible hardware.
 - Run the weather and traffic tests against a live simulator.
 - Record and address any failures from those tests.
+## Confirmed CARLA Hardware Limitation (October 24, 2026)
+
+- GPU: NVIDIA GeForce GTX 1650 Ti with 4 GB VRAM.
+- Launching CARLA at low quality and 800 x 600 resolution resulted
+  in an "Out of video memory" error.
+- The CARLA server did not become available on port 2000.
+- Weather and heavy-traffic integration tests remain unverified.
+- Local image preprocessing, ONNX inference, and PID-control tests pass.
+- Next action: test CARLA on hardware with sufficient video memory.
+
