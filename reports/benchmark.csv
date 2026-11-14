@@ -1,5 +1,5 @@
-model,latency_ms,fps,size_mb,accuracy
-ONNX,84.37,11.85,89.62,N/A - labelled data required
-Dynamic INT8,141.56,7.06,89.99,N/A - labelled data required
-Pruned,145.11,6.89,90.0,N/A - labelled data required
-Baseline,159.3,6.28,90.0,N/A - labelled data required
+model,latency_ms,fps,memory_mb,memory_increase_mb,size_mb,accuracy
+ONNX,58.24,17.17,521.67,119.47,89.62,N/A - labelled data required
+Dynamic INT8,118.22,8.46,483.91,-2.28,89.99,N/A - labelled data required
+Pruned,127.12,7.87,486.37,8.18,90.0,N/A - labelled data required
+Baseline,141.76,7.05,489.57,193.46,90.0,N/A - labelled data required
