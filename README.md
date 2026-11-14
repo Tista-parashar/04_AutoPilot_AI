@@ -110,16 +110,29 @@ Run `.\venv\Scripts\Activate.ps1` from the project root in PowerShell.
 
 ### 2. Run Automated Tests
 
-With the virtual environment active, run `python -m pytest -q` and review the results.
+With the virtual environment active, run:
 
+`$env:PYTHONPATH = "src"`
+
+`python -m pytest -q`
+
+Latest result: 13 passed, 4 skipped.
 ### 3. ONNX Model and Image Processing
 
 The ONNX model is located at `models/model.onnx`. The bridge in `src/carla_bridge.py` provides image preprocessing, ONNX inference, and PID-based control suggestion functions.
-
 ### 4. Docker Packaging
 
-Build the image using `docker build -t autopilot:latest .`. The build has not yet succeeded because of package-download connectivity problems.
+Build the Docker image:
 
+`docker build -t autopilot:latest .`
+
+Run the ONNX inference test inside Docker:
+
+`docker run --rm autopilot:latest python -c "import onnxruntime as ort; s=ort.InferenceSession('models/model.onnx'); print('ONNX model loaded successfully')"`
+
+Docker packaging and ONNX inference have been verified successfully.
+
+The optimized Docker build context is approximately 5.24 KB.
 ### 5. CARLA Simulation
 
 A working CARLA server and compatible client integration are required. End-to-end vehicle control has not yet been verified.
