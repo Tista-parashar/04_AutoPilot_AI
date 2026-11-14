@@ -1,0 +1,36 @@
+{
+  "id": null,
+  "uid": "autopilot-monitor",
+  "title": "AutoPilot AI Monitoring",
+  "tags": ["autopilot", "monitoring"],
+  "timezone": "browser",
+  "schemaVersion": 39,
+  "version": 1,
+  "refresh": "5s",
+  "panels": [
+    {
+      "id": 1,
+      "title": "Total Inference Requests",
+      "type": "stat",
+      "datasource": {"type": "prometheus", "uid": "PBFA97CFB590B2093"},
+      "targets": [{"expr": "autopilot_inference_requests_total", "refId": "A"}],
+      "gridPos": {"h": 8, "w": 8, "x": 0, "y": 0}
+    },
+    {
+      "id": 2,
+      "title": "Failed Inference Requests",
+      "type": "stat",
+      "datasource": {"type": "prometheus", "uid": "PBFA97CFB590B2093"},
+      "targets": [{"expr": "autopilot_inference_errors_total", "refId": "A"}],
+      "gridPos": {"h": 8, "w": 8, "x": 8, "y": 0}
+    },
+    {
+      "id": 3,
+      "title": "Total Inference Time (seconds)",
+      "type": "stat",
+      "datasource": {"type": "prometheus", "uid": "PBFA97CFB590B2093"},
+      "targets": [{"expr": "autopilot_inference_seconds_total", "refId": "A"}],
+      "gridPos": {"h": 8, "w": 8, "x": 16, "y": 0}
+    }
+  ]
+}
