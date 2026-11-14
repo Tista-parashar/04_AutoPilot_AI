@@ -1,54 +1,64 @@
 # Day 50: System-Level Test Report
 
-## Test Summary
+## 1. Test Summary
 
-- Date: October 24, 2026
+- Date: November 14, 2026
 - Test command: `python -m pytest tests/test_system.py -v -rs`
 - Total tests collected: 7
 - Passed: 3
 - Failed: 0
 - Skipped: 4
 
-## Tests Passed
+## 2. Tests Passed
 
 1. Camera image preprocessing
 2. ONNX model inference
 3. PID control output bounds
 
-## Tests Skipped
+## 3. Tests Skipped
 
 1. Sunny weather
 2. Rainy weather
 3. Night conditions
 4. Heavy traffic
 
-## Issue Identified
+## 4. Issue Identified
 
 The CARLA server was unavailable at `127.0.0.1:2000`.
-The connection attempt timed out after 3 seconds.
 
-## Resolution Status
+All four CARLA integration tests were skipped because the connection attempt timed out after 3 seconds.
 
-The local component tests passed. The four CARLA integration
-tests remain unverified because the simulator is unavailable.
+## 5. Resolution Status
 
-## Limitations
+- Local camera preprocessing test passed.
+- ONNX model inference test passed.
+- PID control output bounds test passed.
+- CARLA weather and heavy-traffic scenarios remain unverified.
 
-Passing preprocessing and inference tests does not establish
-real-world driving accuracy or successful end-to-end vehicle control.
+## 6. CARLA Hardware Limitation
 
-## Next Actions
-
-- Restore CARLA connectivity on compatible hardware.
-- Run the weather and traffic tests against a live simulator.
-- Record and address any failures from those tests.
-## Confirmed CARLA Hardware Limitation (October 24, 2026)
+Previous CARLA launch attempts on the available hardware resulted in an "Out of video memory" error.
 
 - GPU: NVIDIA GeForce GTX 1650 Ti with 4 GB VRAM.
-- Launching CARLA at low quality and 800 x 600 resolution resulted
-  in an "Out of video memory" error.
-- The CARLA server did not become available on port 2000.
-- Weather and heavy-traffic integration tests remain unverified.
-- Local image preprocessing, ONNX inference, and PID-control tests pass.
-- Next action: test CARLA on hardware with sufficient video memory.
+- CARLA server did not become available on port 2000.
+- Low-quality settings and 800 x 600 resolution did not resolve the issue.
 
+## 7. Limitations
+
+- Actual CARLA weather testing has not been completed.
+- Heavy-traffic simulation has not been verified.
+- Passing local tests does not establish real-world driving accuracy.
+- End-to-end autonomous vehicle control remains unverified.
+
+## 8. Next Actions
+
+- Run CARLA on compatible hardware with sufficient video memory.
+- Repeat sunny, rainy, and night weather tests.
+- Run the heavy-traffic scenario.
+- Record and resolve any failures from live simulation testing.
+
+## 9. Conclusion
+
+The system-level test suite collected seven tests. Three local component tests passed, and four CARLA integration tests were skipped because the simulator was unavailable.
+
+Image preprocessing, ONNX inference, and PID control output checks are verified. However, complete end-to-end autonomous driving and CARLA scenario validation remain outstanding.
