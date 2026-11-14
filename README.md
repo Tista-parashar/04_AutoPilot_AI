@@ -1,140 +1,170 @@
-  # AutoPilot AI
+# AutoPilot AI
 
-## Project Objective
+An experimental computer vision and machine learning project for image-based autonomous driving research. The project includes image preprocessing, ONNX inference, a local HTTP API, Docker deployment, and monitoring with Prometheus and Grafana.
 
-Build an autonomous driving system that can perceive the environment, make decisions, and control vehicle movement.
+> **Safety notice:** This project is an experimental software demonstration. Model accuracy and driving performance have not been validated. It must not be used to control real vehicles.
 
-## System Architecture
+## Documentation
 
-### Perception
-- Camera
-- LiDAR
-- GPS
+| Document | Description |
+|---|---|
+| [User Guide](docs/user_guide.md) | Installation, running the application, predictions, and monitoring |
+| [Developer Guide](docs/developer_guide.md) | Development setup, architecture, testing, and deployment |
+| [API Reference](docs/api_reference.md) | HTTP endpoints, request formats, responses, and metrics |
 
-### Decision
-- RL Agent
-- Path Planner
+## Project Features
 
-### Control
-- Steering
-- Brake
-- Throttle
+- Image cleaning and preprocessing
+- Dataset exploration and preparation
+- Deep learning model development using PyTorch
+- ONNX model export and CPU inference
+- Image-based inference through a local HTTP API
+- Docker containerization and Docker Compose
+- Prometheus metrics collection
+- Grafana monitoring dashboard
+- Automated testing and regression checks
 
-## Tech Stack
+## Technology Stack
 
 - Python
-- PyTorch
-- NumPy
-- Pandas
-- Matplotlib
-- Scikit-Learn
-- Git
-- GitHub
+- PyTorch and Torchvision
+- NumPy and Pandas
+- Scikit-learn
+- OpenCV and Pillow
+- ONNX and ONNX Runtime
+- Docker and Docker Compose
+- Prometheus and Grafana
+- Git and GitHub
 
-## Hardware Constraints
+## Project Structure
 
-- Limited processing power
-- Sensor inaccuracies
-- Memory limitations
-
-## Software Constraints
-
-- Python dependencies
-- Training time requirements
-- Dataset size limitations
-
-## Folder Structure
-
+```text
 04_AutoPilot_AI/
-├── docs/
-│   └── architecture.png
+├── config/
+│   ├── grafana/
+│   │   ├── dashboards/
+│   │   └── provisioning/
+│   └── prometheus.yml
 ├── data/
+├── docs/
+│   ├── research/
+│   ├── user_guide.md
+│   ├── developer_guide.md
+│   └── api_reference.md
 ├── models/
 ├── notebooks/
+├── reports/
 ├── src/
+├── tests/
+├── Dockerfile
+├── docker-compose.yml
+├── requirements-docker.txt
 └── README.md
+```
 
-## Data Preparation
+## Getting Started
 
-The data preparation pipeline includes the following steps:
+### Requirements
 
-1. Load image data and labels.
-2. Clean and validate images.
-3. Resize images to the required dimensions.
-4. Split the dataset into training, validation, and test sets.
-5. Apply preprocessing and normalization.
-6. Use data augmentation during training.
-7. Analyse the dataset using EDA.
-8. Calculate mean and standard deviation for normalization.
+- Python 3.12 for local development
+- Docker Desktop with Docker Compose
+- Git
+- The project ONNX model at `models/model.onnx`
 
-The dataset is split into:
-- 70% training data
-- 15% validation data
-- 15% test data
+### Clone the Repository
 
-The calculated mean and standard deviation are stored in `data/mean_std.json`.
+```powershell
+git clone https://github.com/Tista-parashar/04_AutoPilot_AI.git
+cd 04_AutoPilot_AI
+```
 
-## Preprocessing Pipeline
+### Run with Docker Compose
 
-The preprocessing pipeline includes:
+Build and start the application and monitoring services:
 
-- Image cleaning and validation
-- Image resizing to 256×256
-- Feature engineering
-- Feature normalization
-- Data versioning with DVC
-- Preprocessing pipeline using sklearn Pipeline
-- Integration with DataLoader
+```powershell
+docker compose up -d --build
+```
 
-Pipeline artifacts:
+Check service status:
 
-- models/preprocessor.joblib
-- data/norm_params.json
-- data/feature_scaler.pkl
-## Model Deployment
+```powershell
+docker compose ps
+```
 
-- Selected model: ONNX
-- Latency: 80.85 ms
-- Speed: 12.37 FPS
-- Model size: 89.62 MB
-- Accuracy: Not measured because labelled evaluation data is unavailable.
+### Service URLs
 
-See `reports/optimization_report.md` for the full optimisation report.
+| Service | URL |
+|---|---|
+| Inference API | http://localhost:8001 |
+| Health check | http://localhost:8001/health |
+| Metrics | http://localhost:8001/metrics |
+| Prometheus | http://localhost:9090 |
+| Grafana | http://localhost:3000 |
 
-ONNX is selected for further integration testing. The model has not been validated for real-world autonomous driving.
-## Usage Instructions
+Grafana's initial development credentials are `admin` / `admin`. Change the default password before continued use.
 
-### 1. Activate the Python Environment
+## Running Automated Tests
 
-Run `.\venv\Scripts\Activate.ps1` from the project root in PowerShell.
+Activate the Python virtual environment:
 
-### 2. Run Automated Tests
+```powershell
+.\venv\Scripts\Activate.ps1
+```
 
-With the virtual environment active, run:
+Set the Python import path:
 
-`$env:PYTHONPATH = "src"`
+```powershell
+$env:PYTHONPATH = "src"
+```
 
-`python -m pytest -q`
+Run tests:
 
-Latest result: 13 passed, 4 skipped.
-### 3. ONNX Model and Image Processing
+```powershell
+python -m pytest -q
+```
 
-The ONNX model is located at `models/model.onnx`. The bridge in `src/carla_bridge.py` provides image preprocessing, ONNX inference, and PID-based control suggestion functions.
-### 4. Docker Packaging
+Some simulator-related tests may be skipped when CARLA is unavailable.
 
-Build the Docker image:
+## Model and Inference
 
-`docker build -t autopilot:latest .`
+The ONNX model is stored at:
 
-Run the ONNX inference test inside Docker:
+`models/model.onnx`
 
-`docker run --rm autopilot:latest python -c "import onnxruntime as ort; s=ort.InferenceSession('models/model.onnx'); print('ONNX model loaded successfully')"`
+The inference service is implemented in `src/inference_service.py`.
 
-Docker packaging and ONNX inference have been verified successfully.
+It accepts image bytes through `POST /predict`, preprocesses the image, and returns three raw model outputs with inference time.
 
-The optimized Docker build context is approximately 5.24 KB.
-### 5. CARLA Simulation
+The outputs do not represent validated steering, braking, or throttle commands.
 
-A working CARLA server and compatible client integration are required. End-to-end vehicle control has not yet been verified.
+## Monitoring
 
-See `reports/integration_report.md` for integration results and known limitations.
+The project uses:
+
+- **Prometheus** to collect inference request, error, and timing metrics.
+- **Grafana** to display the monitoring dashboard.
+
+The monitoring configuration is stored in `config/`.
+
+## Deployment and Reports
+
+See [deployment.md](deployment.md) for local Docker deployment instructions and verification details.
+
+Additional project reports and experimental results are stored in `reports/`.
+
+## Known Limitations
+
+- Model accuracy has not been established using labelled evaluation data.
+- Training targets used during development do not establish meaningful driving performance.
+- Real-world autonomous driving performance is unvalidated.
+- CARLA end-to-end vehicle simulation is incomplete.
+- The HTTP inference service is a basic local demonstration, not a hardened production API.
+
+## License
+
+Add the appropriate project license before distributing this repository publicly.
+
+
+
+
