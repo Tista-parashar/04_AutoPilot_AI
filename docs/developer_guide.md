@@ -210,4 +210,4 @@ Avoid staging unrelated backup files.
 - Update documentation when APIs or configurations change.
 - Do not commit virtual environments, temporary files, or generated cache files.
 - Keep model and preprocessing configurations consistent.
-- Validate changes
+- Validate changes locally before committing.

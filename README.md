@@ -11,7 +11,6 @@ An experimental computer vision and machine learning project for image-based aut
 | [User Guide](docs/user_guide.md) | Installation, running the application, predictions, and monitoring |
 | [Developer Guide](docs/developer_guide.md) | Development setup, architecture, testing, and deployment |
 | [API Reference](docs/api_reference.md) | HTTP endpoints, request formats, responses, and metrics |
-
 ## Project Features
 
 - Image cleaning and preprocessing
@@ -56,6 +55,8 @@ An experimental computer vision and machine learning project for image-based aut
 ├── reports/
 ├── src/
 ├── tests/
+├── web/
+│   └── index.html
 ├── Dockerfile
 ├── docker-compose.yml
 ├── requirements-docker.txt
@@ -149,7 +150,7 @@ The monitoring configuration is stored in `config/`.
 
 ## Deployment and Reports
 
-See [deployment.md](deployment.md) for local Docker deployment instructions and verification details.
+Docker deployment instructions are provided in the User Guide and Developer Guide.
 
 Additional project reports and experimental results are stored in `reports/`.
 

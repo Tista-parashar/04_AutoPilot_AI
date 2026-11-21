@@ -56,6 +56,19 @@ class InferenceHandler(BaseHTTPRequestHandler):
         self.wfile.write(body)
 
     def do_GET(self):
+        if self.path in ("/", "/index.html"):
+            page = Path("web/index.html")
+            if not page.is_file():
+                self.send_json(404, {"error": "Website file not found"})
+                return
+            body = page.read_bytes()
+            self.send_response(200)
+            self.send_header("Content-Type", "text/html; charset=utf-8")
+            self.send_header("Content-Length", str(len(body)))
+            self.end_headers()
+            self.wfile.write(body)
+            return
+
         if self.path == "/health":
             if session is None:
                 self.send_json(503, {"status": "not_ready"})
